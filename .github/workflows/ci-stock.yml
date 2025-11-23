@@ -41,7 +41,8 @@ jobs:
           SPRING_PROFILES_ACTIVE: test
 
       - name: SonarQube Analysis
-        run: mvn -B sonar:sonar \
+        run: |
+          mvn -B sonar:sonar \
           -Dsonar.projectKey=Kappa-Stock-BackEnd \
           -Dsonar.organization=ECIXPRESS \
           -Dsonar.host.url=https://sonarcloud.io \

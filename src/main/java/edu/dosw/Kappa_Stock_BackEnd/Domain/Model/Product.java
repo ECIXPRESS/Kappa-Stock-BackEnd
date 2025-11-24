@@ -26,4 +26,15 @@ public class Product {
     private String pointOfSaleId;
     private Integer preparationTime;
     private Boolean available;
+    private Integer stock;
+    private Integer minStockLevel;
+
+    public boolean hasStock() { return stock > 0;}
+
+    public boolean isLowStock() { return stock <= minStockLevel; }
+
+    public void reduceStock(Integer amount) { stock-=amount; }
+
+    public void increaseStock(Integer amount) { stock+=amount; }
+
 }

@@ -1,0 +1,40 @@
+package edu.dosw.Kappa_Stock_BackEnd.Application.Dtos;
+
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import lombok.Data;
+
+import java.math.BigDecimal;
+
+@Data
+@Schema(description = "Data transfer object for product requests")
+public class ProductRequest {
+
+    @Schema(
+            description = "Name of the product",
+            example = "Pan de bono"
+    )
+    @NotBlank
+    private String name;
+
+    @Schema(
+            description = "Price of the product",
+            example = "12000.00"
+    )
+    @Positive
+    private BigDecimal price;
+
+    @Schema(
+            description = "Description of the product",
+            example = "Tipo de pan colombiano elaborado con almidón de yuca, queso y huevos"
+    )
+    private String description;
+
+    @Schema(
+            description = "Category of the product",
+            example = "Pan"
+    )
+    private String category;
+}

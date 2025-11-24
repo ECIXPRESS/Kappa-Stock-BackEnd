@@ -1,4 +1,4 @@
-package edu.dosw.Kappa_Stock_BackEnd.infrastructure.Persistence;
+package edu.dosw.Kappa_Stock_BackEnd.Infraestructure.Persistence;
 
 import edu.dosw.Kappa_Stock_BackEnd.Application.Ports.ProductRepositoryPort;
 import edu.dosw.Kappa_Stock_BackEnd.Domain.Model.Product;

@@ -7,8 +7,10 @@ import edu.dosw.Kappa_Stock_BackEnd.Application.Ports.ProductRepositoryPort;
 import edu.dosw.Kappa_Stock_BackEnd.Application.Services.ProductUseCases.CreateProductUseCase;
 import edu.dosw.Kappa_Stock_BackEnd.Domain.Model.Product;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
+@Service
 public class CreateProductService implements CreateProductUseCase {
 
     private final ProductRepositoryPort productRepository;

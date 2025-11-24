@@ -35,6 +35,12 @@ public class ProductMongoRepositoryAdapter implements ProductRepositoryPort {
     }
 
     @Override
+    public boolean existsById(String id) {
+        return mongoProductRepository.existsById(id);
+    }
+
+
+    @Override
     public boolean existsByName(String name) {
         return mongoProductRepository.existsByName(name);
     }

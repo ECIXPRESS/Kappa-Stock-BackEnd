@@ -15,6 +15,8 @@ public interface ProductRepositoryPort {
 
     void deleteById(String id);
 
+    boolean existsById(String id);
+
     boolean existsByName(String name);
 
 

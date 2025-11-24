@@ -27,7 +27,7 @@ public class CreateProductService implements CreateProductUseCase {
                 .imageUrl(command.imageUrl())
                 .preparationTime(command.preparationTime())
                 .stock(0)
-                .available(true)
+                .available(command.initialStock() > 0)
                 .build();
         Product saved = productRepository.save(product);
         return ProductResponse.from(saved);

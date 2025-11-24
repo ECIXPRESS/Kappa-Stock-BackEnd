@@ -37,4 +37,14 @@ public class ProductRequest {
             example = "Pan"
     )
     private String category;
+
+    @Schema(description = "Image URL of the product",
+            example = "https://example.com/pan.jpg")
+    private String imageUrl;
+
+    @Schema(description = "Preparation time in minutes", example = "15")
+    @Positive(message = "Preparation time must be positive")
+    private Integer preparationTime;
+
+
 }

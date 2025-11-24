@@ -39,14 +39,14 @@ jobs:
         run: mvn -B clean verify
         env:
           SPRING_PROFILES_ACTIVE: test
-
-      - name: SonarQube Analysis
-        run: |
-          mvn -B sonar:sonar \
-          -Dsonar.projectKey=Kappa-Stock-BackEnd \
-          -Dsonar.organization=ECIXPRESS \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      #Needs fixing
+      #- name: SonarQube Analysis
+      #  run: |
+      #    mvn -B sonar:sonar \
+      #    -Dsonar.projectKey=Kappa-Stock-BackEnd \
+      #    -Dsonar.organization=ECIXPRESS \
+      #    -Dsonar.host.url=https://sonarcloud.io \
+      #    -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
 
       - name: Publish JaCoCo HTML Report

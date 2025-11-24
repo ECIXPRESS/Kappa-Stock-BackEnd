@@ -23,7 +23,6 @@ public class Product {
     private BigDecimal price;
     private String category;
     private String imageUrl;
-    private String pointOfSaleId;
     private Integer preparationTime;
     private Boolean available;
     private Integer stock;

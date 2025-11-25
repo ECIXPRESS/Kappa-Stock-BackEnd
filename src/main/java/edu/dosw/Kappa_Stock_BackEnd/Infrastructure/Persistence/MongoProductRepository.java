@@ -1,4 +1,4 @@
-package edu.dosw.Kappa_Stock_BackEnd.Infraestructure.Persistence;
+package edu.dosw.Kappa_Stock_BackEnd.Infrastructure.Persistence;
 
 import edu.dosw.Kappa_Stock_BackEnd.Domain.Model.Product;
 import org.springframework.data.mongodb.repository.MongoRepository;

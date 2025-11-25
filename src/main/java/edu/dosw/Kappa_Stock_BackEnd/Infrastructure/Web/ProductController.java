@@ -1,4 +1,4 @@
-package edu.dosw.Kappa_Stock_BackEnd.Infraestructure.Web;
+package edu.dosw.Kappa_Stock_BackEnd.Infrastructure.Web;
 
 
 import edu.dosw.Kappa_Stock_BackEnd.Application.Dtos.ProductRequest;

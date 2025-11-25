@@ -1,47 +1,36 @@
-package com.eciexpress.inventory.domain;
+package edu.dosw.Kappa_Stock_BackEnd.Domain.Model;
+
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Document(collection = "stock_alerts")
 public class StockAlert {
+
+    @Id
     private String id;
+
     private String productId;
-    private String type;
+    private String productName;
+
+    private StockAlertType alertType;
+
     private Integer currentStock;
     private Integer minStockLevel;
-    private LocalDateTime alertDate;
-    private Boolean resolved;
 
-    public StockAlert() {}
+    @Builder.Default
+    private StockAlertStatus status = StockAlertStatus.ACTIVE;
 
-    public StockAlert(String id, String productId, String type, Integer currentStock,
-                      Integer minStockLevel, LocalDateTime alertDate, Boolean resolved) {
-        this.id = id;
-        this.productId = productId;
-        this.type = type;
-        this.currentStock = currentStock;
-        this.minStockLevel = minStockLevel;
-        this.alertDate = alertDate;
-        this.resolved = resolved;
-    }
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-
-    public String getProductId() { return productId; }
-    public void setProductId(String productId) { this.productId = productId; }
-
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
-
-    public Integer getCurrentStock() { return currentStock; }
-    public void setCurrentStock(Integer currentStock) { this.currentStock = currentStock; }
-
-    public Integer getMinStockLevel() { return minStockLevel; }
-    public void setMinStockLevel(Integer minStockLevel) { this.minStockLevel = minStockLevel; }
-
-    public LocalDateTime getAlertDate() { return alertDate; }
-    public void setAlertDate(LocalDateTime alertDate) { this.alertDate = alertDate; }
-
-    public Boolean getResolved() { return resolved; }
-    public void setResolved(Boolean resolved) { this.resolved = resolved; }
+    private LocalDateTime resolvedAt;
+    private String resolvedBy;
 }

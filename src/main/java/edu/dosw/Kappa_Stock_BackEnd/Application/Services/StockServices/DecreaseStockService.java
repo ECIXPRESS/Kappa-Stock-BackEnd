@@ -3,7 +3,6 @@ package edu.dosw.Kappa_Stock_BackEnd.Application.Services.StockServices;
 import edu.dosw.Kappa_Stock_BackEnd.Application.Dtos.ProductResponse;
 import edu.dosw.Kappa_Stock_BackEnd.Application.Dtos.command.StockCommands.StockOperationCommand;
 //import edu.dosw.Kappa_Stock_BackEnd.Application.Exceptions.InsufficientStockException;
-//import edu.dosw.Kappa_Stock_BackEnd.Application.Ports.ProductRepositoryPort;
 import edu.dosw.Kappa_Stock_BackEnd.Application.Ports.ProductRepositoryPort;
 import edu.dosw.Kappa_Stock_BackEnd.Application.Ports.StockAlertRepositoryPort;
 import edu.dosw.Kappa_Stock_BackEnd.Application.Ports.StockMovementRepositoryPort;

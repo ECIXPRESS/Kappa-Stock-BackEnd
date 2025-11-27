@@ -300,18 +300,15 @@ A continuación se describen con detalle las funcionalidades que ofrece el micro
 
 ### 7.3 Diagrama de Clases
 
+![Clases.png](docs/imagenes/Clases.png)
 
+### 7.4 Diagrama de Componentes Específico
 
-### 7.4 Diagrama de Componentes General
+![ComponentesEspecifico.png](docs/imagenes/ComponentesEspecifico.png)
 
+### 7.5 Diagrama de Componentes General
 
-
-### 7.5 Diagrama de Componentes Específico
-
-
-
-## 8. 🌐 Endpoints expuestos y su información de entrada y salida
-
+![ComponentesGeneral.png](docs/imagenes/ComponentesGeneral.png)
 
 
 ## 9. ⚠️ Manejo de Errores

@@ -17,7 +17,6 @@ public class CreateProductService implements CreateProductUseCase {
 
     @Override
     public ProductResponse createProduct(CreateProductCommand command){
-        // Cuando se haga las exceptions se modifica esto.
         if (productRepository.existsByName(command.name())){
             throw new RuntimeException();
         }

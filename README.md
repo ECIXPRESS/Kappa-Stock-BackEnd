@@ -32,8 +32,6 @@
 ![Authentication](https://img.shields.io/badge/Auth-JWT-purple)
 
 ![GitHub](https://img.shields.io/badge/GitHub-Repository-black?logo=github)
-![VS Code](https://img.shields.io/badge/IDE-VS%20Code-blue?logo=visual-studio-code)
-![Postman](https://img.shields.io/badge/Testing-Postman-orange?logo=postman)
 
 
 # 📚 ECIEXPRESS
@@ -45,7 +43,7 @@
 ## 📑 Tabla de Contenidos
 
 1. 👤 [Integrantes](#1--integrantes)
-2. 🎯 [Objetivo del Proyecto](#2--objetivo-del-proyecto)
+2. 📦 [Microservicio de Stock](#2--objetivo-del-proyecto)
 3. ⚡ [Funcionalidades principales](#3--funcionalidades-principales)
 4. 📋 [Manejo de Estrategia de versionamiento y branches](#4--manejo-de-estrategia-de-versionamiento-y-branches)
     - 4.1 [Convenciones para crear ramas](#41-convenciones-para-crear-ramas)
@@ -81,22 +79,22 @@
 - Marlio Charry
 - Juan Pablo Contreras
 
-## 2. 🎯 Objetivo del Proyecto
+## 2. 📦 Microservicio de Stock
 
-En la actualidad, las cafeterias y papelerias dentro de nuestro campus universitario se presentan serias dificultades
-operativas durante las horas pico. Estudiantes, docentes y personal administrativo deben enfrentar largas filas y
-esperas prolongadas para adquirir sus alimentos o materiales pedidos, lo que genera gran perdida de tiempo, generando
-retrasos a clases, desorganizacon y una mala experiencia tanto para los usuarios como para los trabajadores.
-
-El modelo de atención presencial genera mucha agromelación, errores en pedidos y pagos, poca trazabilidad en las ventas,
-generando poca eficiencia operativa. Por lo cual se requiere un sistema digital que optimice los procesos de compra, para
-reducir los tiempos de espera y mejorando la experiencia de todos.
+Este repositorio contiene el microservicio responsable de gestionar el inventario (stock) de productos para la plataforma EciExpress. Provee APIs para consultar niveles de stock, reservar y liberar unidades, registrar
+entradas/salidas y obtener reportes históricos del inventario. Está diseñado para integrarse detrás de una API
+Gateway y comunicarse con otros microservicios (pedidos, facturación, catálogo) mediante eventos o llamadas REST.
 
 ---
 
 ## 3. ⚡ Funcionalidades principales
 
+Este microservicio centraliza la lógica de inventario:
 
+- Mantener el nivel de unidades disponibles por producto.
+- Soportar reservas temporales (ej. para procesos de checkout) con TTL y liberación automática o manual.
+- Registrar movimientos de stock (entrada, salida, ajuste) para auditoría.
+- Exponer reportes de disponibilidad y rotación de inventario.
 
 ## 4. 📋 Manejo de Estrategia de versionamiento y branches
 
@@ -226,7 +224,7 @@ git commit -m "24-fix: arreglar bug"
 
 ## 5. ⚙️Tecnologías utilizadas
 
-El backend del sistema ECIEXPRESS fue desarrollado con una arquitectura basada en **Spring Boot** y componentes del ecosistema **Java**, garantizando modularidad, mantenibilidad, seguridad y facilidad de despliegue.  
+El backend del microservicio de stock de la plataforma EciExpress fue desarrollado con una arquitectura basada en **Spring Boot** y componentes del ecosistema **Java**, garantizando modularidad, mantenibilidad, seguridad y facilidad de despliegue.  
 A continuación se detallan las principales tecnologías empleadas en el proyecto:
 
 | **Tecnología / Herramienta** | **Versión / Framework** | **Uso principal en el proyecto** |
@@ -244,7 +242,6 @@ A continuación se detallan las principales tecnologías empleadas en el proyect
 | **JaCoCo** | — | Generación de reportes de cobertura de código para evaluar la efectividad de las pruebas. |
 | **SonarQube** | — | Análisis estático del código fuente y control de calidad para detectar vulnerabilidades y malas prácticas. |
 | **Swagger (OpenAPI 3)** | — | Generación automática de documentación y prueba interactiva de los endpoints REST. |
-| **Postman** | — | Entorno de pruebas de la API, utilizado para validar respuestas en formato JSON con los métodos `POST`, `GET`, `PATCH` y `DELETE`. |
 | **Docker** | — | Contenerización del servicio para garantizar despliegues consistentes en distintos entornos. |
 | **Azure App Service** | — | Entorno de ejecución en la nube para el despliegue automático del backend. |
 | **Azure DevOps** | — | Plataforma para la gestión ágil del proyecto, seguimiento de tareas y control de versiones. |
@@ -256,14 +253,62 @@ A continuación se detallan las principales tecnologías empleadas en el proyect
 
 ## 6. 🧩 Funcionalidad
 
+A continuación se describen con detalle las funcionalidades que ofrece el microservicio de stock y el comportamiento esperado de cada una:
 
+- **Consulta de stock por producto**:
+    - Endpoint: `GET /api/v1/stock/{productId}`.
+    - Descripción: Devuelve el estado actual del inventario para un producto: unidades disponibles (`available`), reservadas (`reserved`) y total (`total`).
+    - Uso: Lecturas rápidas y cacheables para mostrar disponibilidad en el catálogo o durante checkout.
+
+- **Reserva de unidades (locking lógico)**:
+    - Endpoint: `POST /api/v1/stock/reserve`.
+    - Descripción: Reserva N unidades para un `reservationId` único (idempotencia) asociado a un `orderId` o flujo de checkout. Se decrementa `available` y aumenta `reserved` hasta que se confirme o expire.
+    - Reglas: Validaciones de cantidad, control de over-reservation y retorno de estado claro (`reserved` / `insufficient_stock`).
+
+- **Liberación de reserva**:
+    - Endpoint: `POST /api/v1/stock/release`.
+    - Descripción: Libera una reserva por `reservationId` (por cancelación, expiración o rollback). Restaura `available` y decrementa `reserved` de forma idempotente.
+    - TTL: Las reservas pueden expirar automáticamente tras `ttlSeconds`; el servicio puede ejecutar un job de limpieza o usar Redis con expiración.
+
+- **Confirmación/consumo de stock (checkout final)**:
+    - Comportamiento: Cuando un pedido se confirma, la reserva se transforma en consumo real: `reserved` decrementa y `total` / movimientos reflejan la salida (`OUT`).
+    - Integración: Emitir evento `stock.consumed` o registrar un `StockMovement` de tipo `OUT` para trazabilidad.
+
+- **Registro de movimientos (IN / OUT / ADJUST)**:
+    - Endpoint: `POST /api/v1/stock/movement`.
+    - Descripción: Registrar entradas (recepciones), salidas (consumos) y ajustes manuales por inventario. Cada movimiento genera un registro de auditoría con `movementId`, `reason` y `performedBy`.
+    - Uso: Ajustes de inventario, recepciones de proveedores, devoluciones.
+
+- **Reportes históricos y rotación**:
+    - Endpoint: `GET /api/v1/stock/report?from=&to=`.
+    - Descripción: Agregados y listados de movimientos por producto, periodos y métricas de rotación (ej. días de inventario, velocidad de venta).
+    - Salida: Datos que permiten construir CSV/Excel y dashboards.
+
+- **Exportación de datos**:
+    - Funcionalidad: Permitir exportar reportes a CSV/Excel desde el payload JSON devuelto o mediante job asíncrono que genere y exponga un enlace de descarga.
+---
 
 ## 7. 📊 Diagramas
 
+### 7.1 Diagrama de Contexto
 
 
-## 8. 🌐 Endpoints expuestos y su información de entrada y salida
 
+### 7.2 Diagrama de Casos de Usos
+
+![CasosDeUso.png](docs/imagenes/CasosDeUso.png)
+
+### 7.3 Diagrama de Clases
+
+![Clases.png](docs/imagenes/Clases.png)
+
+### 7.4 Diagrama de Componentes Específico
+
+![ComponentesEspecifico.png](docs/imagenes/ComponentesEspecifico.png)
+
+### 7.5 Diagrama de Componentes General
+
+![ComponentesGeneral.png](docs/imagenes/ComponentesGeneral.png)
 
 
 ## 9. ⚠️ Manejo de Errores

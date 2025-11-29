@@ -292,6 +292,7 @@ A continuación se describen con detalle las funcionalidades que ofrece el micro
 
 ### 7.1 Diagrama de Contexto
 
+![Contexto.png](docs/imagenes/Contexto.png)
 
 
 ### 7.2 Diagrama de Casos de Usos

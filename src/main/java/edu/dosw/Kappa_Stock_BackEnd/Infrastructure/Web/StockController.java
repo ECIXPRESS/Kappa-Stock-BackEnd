@@ -39,7 +39,7 @@ public class StockController {
             description = "Remove stock from a product (sales, damage, etc.)")
     @PostMapping("/decrease")
     public ResponseEntity<ProductResponse> decreaseStock(
-            @PathVariable String productId,
+            @PathVariable("productId") String productId,
             @Valid @RequestBody StockOperationRequest request) {
 
         StockOperationCommand command =

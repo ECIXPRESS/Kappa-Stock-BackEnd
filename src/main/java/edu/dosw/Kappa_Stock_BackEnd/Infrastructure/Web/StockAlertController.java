@@ -1,4 +1,4 @@
-package edu.dosw.Kappa_Stock_BackEnd.infrastructure.Controllers;
+package edu.dosw.Kappa_Stock_BackEnd.Infrastructure.Web;
 
 import edu.dosw.Kappa_Stock_BackEnd.Domain.Model.StockAlert;
 import edu.dosw.Kappa_Stock_BackEnd.Domain.Model.StockAlertStatus;

@@ -434,27 +434,129 @@ La siguiente tabla resume los principales tipos de excepciones manejadas en el s
 
 ## 10. 🧪 Evidencia de las pruebas y cómo ejecutarlas
 
+![Jacoco.png](docs/imagenes/Jacoco.png)
 
+Para ejecutar
+
+> mvn clean test
 
 ## 11. 🗂️ Código de la implementación organizado en las respectivas carpetas
 
+El código del proyecto sigue una arquitectura en capas (Domain-Application-Infrastructure) y está organizado de la siguiente forma principal:
 
+- src/main/java/edu/dosw/Kappa_Stock_BackEnd/
+  - Domain/Model — Entidades del dominio (Product, StockAlert, StockMovement, enums, etc.)
+  - Application/
+    - Dtos — DTOs y comandos usados por los casos de uso
+    - Ports — Interfaces de puertos (repositorios) para abstracción de persistencia
+    - Services — Implementaciones de los casos de uso (CreateProductService, IncreaseStockService, etc.)
+    - Services/*UseCases* — Definición de los casos de uso como interfaces
+  - Infrastructure/
+    - Persistence — Adaptadores para MongoDB (repositories / adapters)
+    - Web — Controladores REST (ProductController, StockController, StockAlertController)
+    - Config — Beans y configuración de la aplicación
+  - Config — Configuración de beans y wiring central (BeanConfiguration)
+
+- src/main/resources/ — configuración de Spring (application.properties), mensajes y assets
+- src/test/java/ — pruebas unitarias e integración organizadas en paquetes paralelos a src/main
+- docs/ — diagramas, imágenes y documentación adicional (diagrama de contexto, casos de uso, jacoco, etc.)
+
+Consejos para navegar el repo:
+- Buscar los casos de uso en Application/Services para entender la lógica de negocio.
+- Revisar Infrastructure/Persistence para ver cómo se mapea con MongoDB.
+- Las pruebas están en src/test/java y sirven como ejemplos de uso de los servicios.
+
+---
 
 ## 12. 📝 Código documentado
 
+El proyecto incluye documentación inline y comentarios donde la lógica lo requiere, además de estar preparado para generar documentación adicional:
 
+- OpenAPI / Swagger: la API REST está documentada con anotaciones (Swagger/OpenAPI).
+
+**Cómo generar documentación locamente:**
+
+- Swagger UI en tiempo de ejecución:
+
+  Ejecutar la aplicación y acceder a: http://localhost:8080/swagger-ui.html o la ruta configurada por springdoc.
+
+- docs/imagenes/SwaggerUI.png — captura de Swagger UI en ejecución.
+
+---
 
 ## 13. 🧾 Pruebas coherentes con el porcentaje de cobertura expuesto
 
+Se emplea JUnit 5 y Mockito para pruebas unitarias; JaCoCo genera el reporte de cobertura.
 
+- Ejecutar pruebas y generar reporte de cobertura:
+
+  >mvn clean test
+
+  El reporte de Jacoco (HTML) se genera en: target/site/jacoco/index.html
+
+- Estructura de pruebas relevantes:
+  - src/test/java/.../Domain — pruebas unitarias de modelos (ProductTest, StockAlertTest, StockMovementTest)
+  - src/test/java/.../Application/Services — pruebas unitarias de servicios (CreateProductServiceTest, Increase/DecreaseStockServiceTest, etc.)
+  - src/test/java/.../Infrastructure/Web — pruebas de controladores con MockMvc (unitarias) e integración (Testcontainers, deshabilitadas localmente si Docker no está disponible)
+
+- Nota sobre la cobertura mostrada en la cabecera: el porcentaje proviene del reporte JaCoCo integrado en el pipeline; si deseas actualizar la métrica localmente, abre el archivo HTML indicado después de ejecutar los tests.
+
+
+![Jacoco.png](docs/imagenes/Jacoco.png)
+
+---
 
 ## 14. 🚀 Ejecución del Proyecto
 
+Requisitos previos:
+- Java 17
+- Maven 3.8+ (o 3.9+)
+- MongoDB local o conexión a MongoDB Atlas (opcional: Docker para pruebas de integración)
 
+Ejecución local (modo desarrollo):
+
+1. Configurar variables / application.properties si usas MongoDB distinto al configurado por defecto.
+2. Ejecutar con Maven:
+
+  > mvn spring-boot:run
+
+  o generar jar y ejecutar:
+
+  > mvn clean package
+>
+  > java -jar target/*.jar
+
+- Endpoints por defecto estarán expuestos en: http://localhost:8080/api/
+- Swagger UI: http://localhost:8080/swagger-ui.html (si springdoc está activo)
+
+Ejecución con Docker (opcional):
+
+1. Construir la imagen:
+
+  > docker build -t eciexpress-stock:latest .
+
+2. Ejecutar (asegurarse de apuntar a una instancia de MongoDB válida):
+
+  > docker run -e SPRING_DATA_MONGODB_URI="mongodb://host:27017/stock-db" -p 8080:8080 eciexpress-stock:latest
+
+---
 
 ## 15. ☁️ Evidencia de CI/CD y Despliegue en Azure
 
+La integración continua y despliegue se manejan mediante GitHub Actions y despliegues automáticos a Azure App Service (o slot configurado). El pipeline realiza:
 
+- Compilación del proyecto y ejecución de pruebas (mvn test)
+- Análisis de calidad (SonarQube) y reporte de cobertura (JaCoCo)
+- Construcción de imagen Docker y push (si aplica)
+- Despliegue a Azure App Service con credenciales seguras gestionadas por secrets de GitHub
+
+Archivos y puntos de interés:
+- .github/workflows/ci-cd.yml — flujo principal de CI/CD
+- Azure Portal — App Service asociado al repositorio (configurada mediante GitHub Actions)
+
+![CI/CD.png](docs/imagenes/CICD.png)
+
+---
 
 ## 16. 🤝 Contribuciones y agradecimientos
 

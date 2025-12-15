@@ -39,9 +39,11 @@ public class StockController {
             description = "Remove stock from a product (sales, damage, etc.)")
     @PostMapping("/decrease")
     public ResponseEntity<ProductResponse> decreaseStock(
-            @PathVariable String productId,
-            @Valid @RequestBody StockOperationRequest request) {
 
+            @PathVariable("productId") String productId,
+            @Valid @RequestBody StockOperationRequest request) {
+        System.out.println("HIT decreaseStock | productId=" + productId
+                + " amount=" + request.getAmount());
         StockOperationCommand command =
                 StockOperationCommand.fromRequest(productId, request);
 

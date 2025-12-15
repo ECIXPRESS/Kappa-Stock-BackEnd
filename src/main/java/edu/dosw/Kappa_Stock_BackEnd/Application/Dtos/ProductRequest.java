@@ -4,7 +4,9 @@ package edu.dosw.Kappa_Stock_BackEnd.Application.Dtos;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
@@ -47,4 +49,16 @@ public class ProductRequest {
     private Integer preparationTime;
 
 
+    public ProductRequest(String name, java.math.BigDecimal price, String description, String category, String imageUrl, Integer preparationTime) {
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.category = category;
+        this.imageUrl = imageUrl;
+        this.preparationTime = preparationTime;
+    }
+
+    public ProductRequest() {
+
+    }
 }

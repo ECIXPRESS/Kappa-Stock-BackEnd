@@ -434,7 +434,11 @@ La siguiente tabla resume los principales tipos de excepciones manejadas en el s
 
 ## 10. 🧪 Evidencia de las pruebas y cómo ejecutarlas
 
+![Jacoco.png](docs/imagenes/Jacoco.png)
 
+Para ejecutar
+
+> mvn clean test
 
 ## 11. 🗂️ Código de la implementación organizado en las respectivas carpetas
 
